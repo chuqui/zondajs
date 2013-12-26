@@ -104,13 +104,13 @@ var url     = require("url");
                 }).value;
             }
         },
-	    component:  function(name, object){
+        component:  function(name, object){
             zondajs.__di.map.push({
                 key: name,
                 value: object
             });    
         },
-	    controller: {
+        controller: {
             get: function(path, callable){
                 zondajs.__routes.add(path, 'GET' ,callable);
             },
@@ -120,8 +120,10 @@ var url     = require("url");
             //add support (at least) for rest http methods put and delete
         },
         startApp: function(port){
+            zondajs.load('./middleware', zondajs.middleware.use);
             http.createServer(function(request, response) {
                 try{
+                    zondajs.middleware.run(request, response);
                     var parsedURL = url.parse(request.url, true);
                     controller = zondajs.__routes.get(parsedURL.pathname, request.method);
                     if(controller){
@@ -142,6 +144,24 @@ var url     = require("url");
                     response.end();
                 }
             }).listen(port);
+        },
+        middleware: {
+            list: [],
+            use: function(middleware){
+                zondajs.middleware.list.push(middleware);
+            },
+            run: function(request, response){
+                _.each(zondajs.middleware.list, function(middleware){
+                    middleware.apply(this, [request, response]);
+                });
+            }
+        },
+        load: function(dir, callback){
+            require('fs').readdirSync(dir + '/').forEach(function(file) {
+                if (file.match(/.+\.js/g) !== null && file !== 'index.js') {
+                    callback(require( dir + '/' + file));
+                }
+            });
         }
     };
 

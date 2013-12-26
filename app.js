@@ -10,15 +10,15 @@ app.component('mensaje', {
     otro: 'mundo'
 });
 
-app.component('messageService', function(){
+app.component('messageService', function(mensaje){
     return {
         print: function(){
-            console.log('---- service ----');
+            console.log('---- service ----'+mensaje.otro);
         }
     };
 });
 
-app.controller.get('/', function(request, response, messageService, mensaje){
+app.controller.get('/', function(request, response, messageService){
     console.log('in the controller /');
     messageService.print();
     response.end("hola juan");
