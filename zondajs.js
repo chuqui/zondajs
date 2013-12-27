@@ -120,7 +120,9 @@ var url     = require("url");
             //add support (at least) for rest http methods put and delete
         },
         startApp: function(port){
-            zondajs.load('./middleware', zondajs.middleware.use);
+            zondajs.load('./middleware', function(name, mid){
+                zondajs.middleware.use(mid);
+            });
             http.createServer(function(request, response) {
                 try{
                     zondajs.middleware.run(request, response);
@@ -159,7 +161,8 @@ var url     = require("url");
         load: function(dir, callback){
             require('fs').readdirSync(dir + '/').forEach(function(file) {
                 if (file.match(/.+\.js/g) !== null && file !== 'index.js') {
-                    callback(require( dir + '/' + file));
+                    var name = file.replace(/.js/g, '');
+                    callback(name, require( dir + '/' + file));
                 }
             });
         }
