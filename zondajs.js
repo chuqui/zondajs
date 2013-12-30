@@ -123,11 +123,18 @@ var url     = require("url");
             zondajs.load('./middleware', function(name, mid){
                 zondajs.middleware.use(mid);
             });
+
             http.createServer(function(request, response) {
                 try{
-                    zondajs.middleware.run(request, response);
+                    // parse the URL with the URL lib
                     var parsedURL = url.parse(request.url, true);
+
+                    // run all the middlewares
+                    zondajs.middleware.run(request, response);
+
+                    // get the controller, and if it has route params, the params too.
                     controller = zondajs.__routes.get(parsedURL.pathname, request.method);
+
                     if(controller){
                         request.params = _.defaults(controller.params, parsedURL.query);
                         zondajs.__di.invoke(controller.method, [request, response]);
@@ -135,15 +142,12 @@ var url     = require("url");
                         response.write("200 OK");
                         response.end();
                     }else{
-                        response.writeHead(404, {"Content-Type": "text/plain"});
-                        response.write("File Not Found");
-                        response.end();
+                        response.sendError(404, 'File Not Found');
                     }
                 }catch(e){
                     console.log(e);
-                    response.writeHead(500, {"Content-Type": "text/plain"});
-                    response.write("Server error");
-                    response.end();
+                    console.log(e.stack);
+                    response.sendError(500, 'Server Error');
                 }
             }).listen(port);
         },

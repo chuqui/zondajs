@@ -14,7 +14,10 @@
     "web",
     "framework"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "underscore": "1.5.2",
+    "ejs":"0.8.5"
+  },
   "engines": {
     "node": "*"
   }
