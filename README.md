@@ -20,14 +20,21 @@ TO-DO
 - [x] Settings/Properties
 - [x] Params parsing (GET/URL routing)
 - [ ] Params parsing (POST/Multipart)
-- [ ] Views
+- [x] Views
 - [ ] Upload
 - [ ] Favicon
 - [ ] Sessions
 - [ ] Request object (Raw request with handy methods/properties)
-- [ ] Response object (Raw response with handy methods/properties)
-- [ ] Error handler
+- [-] Response object (Raw response with handy methods/properties)
+- [-] Error handler
 - [ ] Custom error pages
+
+
+REF: 
+- [x] Finished
+- [-] In Progress
+- [ ] Not implemented yet.
+
 
 How To
 ------
@@ -36,12 +43,12 @@ How To
 
 ```javascript
 var app = require('./zondajs');
-app.load('./mycontrollers', function(name, controller){
-  //do something with the loaded controller
+app.load('./myfolder', function(name, mylib){
+  //do something with the loaded library
 });
 
 ```
-Notice that all the .js files in the 'myControllers' folder will be required. The index.js is ignored.
+Notice that all the .js files in 'myfolder' will be required. The index.js is ignored.
 
 *Expected callback should be like*
 ```javascript
@@ -87,6 +94,7 @@ Middleware will get ran for every request, before the controller is called. It r
 ```javascript
 var app = require('./zondajs');
 
+// Example of a site under construction middleware
 app.middleware.use(function(request, response){
   response.writeHead(200, {"Content-Type": "text/plain"});
   response.write("Under construction!");
@@ -97,8 +105,6 @@ app.middleware.use(function(request, response){
 <b>Dependency Injection</b>
 
 ZondaJS handles dependency injection under the 'component' word. It's cappable of doing recursive injection if needed.
-
-
 
 ```javascript
 var app = require('./zondajs');
@@ -138,6 +144,29 @@ app.startApp(8080);
 
 // On console, it prints: 'Hello World from ZondaJS'
 ```
+
+<b>Create a controller</b>
+
+In ZondaJS you can create controllers in as many separated files as you like. You only need to load them before starting the App.
+
+```javascript
+var app = require('./zondajs');
+
+
+// Creates a controller that mapped in / when usign the GET HTTP method.
+app.controller.get('/', function(request, response){
+    // By default, renders the second parameter in to views/demo.ejs template.
+    // You can modify the response middleware to use the templating engine you like.
+    response.render('demo.ejs', {
+      title: 'Demo App',
+      property1: 'hello',
+      property2: 'world'
+    });
+});
+```
+
+
+
 
 API Docs
 --------
