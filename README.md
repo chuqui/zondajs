@@ -92,7 +92,9 @@ console.log(config.db);  // prints mongodb
 
 <b>Add middleware</b>
 
-Middleware will get ran for every request, before the controller is called. It receives the request and response objects, so you can check for any state you want and perform your operations so the controller get the data already processed.
+Middleware will get ran for every request, before the controller is called. It receives the request, response objects, along with the callback, called next in this example.
+
+You can check for any state you want and perform your operations and call next(request, response) in order to continue.
 
 ```javascript
 var app = require('./zondajs');
@@ -166,8 +168,6 @@ app.controller.get('/', function(request, response){
     });
 });
 ```
-
-
 
 
 API Docs
