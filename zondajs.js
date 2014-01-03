@@ -116,50 +116,18 @@ var url     = require("url");
             },
             post: function(path, callable){
                 zondajs.__routes.add(path, 'POST' ,callable);
+            },
+            put: function(path, callable){
+                zondajs.__routes.add(path, 'PUT' ,callable);
+            },
+            del: function(path, callable){
+                zondajs.__routes.add(path, 'DELETE' ,callable);
             }
-            //add support (at least) for rest http methods put and delete
-        },
-        startApp: function(port){
-            zondajs.load('./middleware', function(name, mid){
-                zondajs.middleware.use(mid);
-            });
-
-            http.createServer(function(request, response) {
-                try{
-                    // parse the URL with the URL lib
-                    var parsedURL = url.parse(request.url, true);
-
-                    // run all the middlewares
-                    zondajs.middleware.run(request, response);
-
-                    // get the controller, and if it has route params, the params too.
-                    controller = zondajs.__routes.get(parsedURL.pathname, request.method);
-
-                    if(controller){
-                        request.params = _.defaults(controller.params, parsedURL.query);
-                        zondajs.__di.invoke(controller.method, [request, response]);
-                        response.writeHead(200, {"Content-Type": "text/plain"});
-                        response.write("200 OK");
-                        response.end();
-                    }else{
-                        response.sendError(404, 'File Not Found');
-                    }
-                }catch(e){
-                    console.log(e);
-                    console.log(e.stack);
-                    response.sendError(500, 'Server Error');
-                }
-            }).listen(port);
         },
         middleware: {
             list: [],
             use: function(middleware){
                 zondajs.middleware.list.push(middleware);
-            },
-            run: function(request, response){
-                _.each(zondajs.middleware.list, function(middleware){
-                    middleware.apply(this, [request, response]);
-                });
             }
         },
         load: function(dir, callback){
@@ -169,6 +137,55 @@ var url     = require("url");
                     callback(name, require( dir + '/' + file));
                 }
             });
+        },
+        dispatcher: {
+            dispatch: function(request, response){
+                // parse the URL with the URL lib
+                var parsedURL = url.parse(request.url, true);
+
+                // get the controller, and if it has route params, the params too.
+                controller = zondajs.__routes.get(parsedURL.pathname, request.method);
+
+                if(controller){
+                    request.zondajs = {};
+                    request.zondajs.controller = controller;
+                    request.zondajs.params = _.defaults(controller.params, parsedURL.query);
+
+                    zondajs.dispatcher.run(request, response);
+                }else{
+                    response.writeHead(404, {"Content-Type": "text/plain"});
+                    response.end('Not Found');
+                 }
+            },
+            run: function(request, response){
+              zondajs.dispatcher.runNext(request, response, 0);
+            },
+            runNext: function(request, response, idx){
+              if(idx < zondajs.middleware.list.length){
+                zondajs.middleware.list[idx].apply(this, [request, response, function(request, response){
+                  zondajs.dispatcher.runNext(request, response, idx+1);
+                }]);
+              }else{
+                request.params = _.defaults(request.params, request.zondajs.controller.params);
+                zondajs.__di.invoke(request.zondajs.controller.method, [request, response]);             
+              }
+            }
+        },
+        startApp: function(port){
+            zondajs.load('./middleware', function(name, mid){
+                zondajs.middleware.use(mid);
+            });
+
+            http.createServer(function(request, response) {
+                try{
+                    zondajs.dispatcher.dispatch(request, response);
+                }catch(e){
+                    console.log(e.stack);
+                    response.writeHead(500, {"Content-Type": "text/plain"});
+                    response.end('Internal Server Error');
+ 
+                }
+            }).listen(port);
         }
     };
 

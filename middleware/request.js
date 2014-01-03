@@ -1,66 +1,28 @@
-var fs = require('fs');
-var _ = require('underscore');
+var formidable = require('formidable');
+var util = require('util');
 
-function parseBody(request){
-  var body = '';
+module.exports = function(request, response, next){
+  if( request.method === 'POST'){
+    
+    var form = new formidable.IncomingForm();
 
-  request.on('data', function(chunk){
-    body += chunk;
-  });
-  
-  request.on('end', function(){
-    var boundary = body.substring(0, body.indexOf('\n'));
-    var rawParams = body.split(boundary);
-    _.each(rawParams, function(rawParam){
-      if(rawParam){
-        var paramData = rawParam.split('\n\n');
-        if(paramData.length > 1){
-          var header = paramData[0];
-          paramData.splice(0, 1);
-          var value = paramData.join('\n\n');
+    form.uploadDir = './uploads';
+    form.keepExtensions = true;
+    form.autoFiles = true;
 
-          var field = parseHeader(header);
-          if(field.isFile){
-            field.data = value;
-            request.files.push(field);
-          }else{
-            request.params[field.name] = value;
-          }
-        }
+    form.parse(request, function(err, fields, files){
+      
+      for(var f in fields){
+        fields[f] = (fields[f].length > 1)? fields[f] : fields[f][0];
       }
+
+      request.params = fields;
+      request.files = files;
+
+      next(request, response);
     });
-  });
-}
 
-function parseHeader(headerToParse){
-  var header = headerToParse.split('\n');
-  var field = {};
-
-  _.each(header, function(head){
-    var headname = head.substring(0, head.indexOf(': '));
-    var headvalues = head.substring(head.indexOf(': ')+2, head.length).split('; ');
-    _.each(headvalues, function(val){
-      var entry = val.split('=');
-
-      field.isFile = (entry[0] == 'filename');
-
-      if(entry.length > 1){
-        field[entry[0]] = entry[1].replace(/"/g, '');
-      }else{
-        if(entry[0]!=''){
-          field[headname] = entry[0];
-        }
-      }
-    });
-  });
-
-  return field;
-}
-
-module.exports = function(request, response){
-    request.files = [];
-    if(request.headers['content-type'].indexOf('multipart/form-data') >= 0){
-	request.setEncoding('utf-8');
-	parseBody(request);
-    }
+  }else{
+    next(request, response);
+  }
 };

@@ -1,4 +1,4 @@
-module.exports = function(request, response){
+module.exports = function(request, response, next){
 
   response.render = function(template, data){
     var ejs = require('ejs')
@@ -13,4 +13,5 @@ module.exports = function(request, response){
     response.end(ejs.render(html));
   };
 
+  next(request, response);
 };
