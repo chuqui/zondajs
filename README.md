@@ -64,7 +64,7 @@ app.load('./myobjects', function(name, myobject){
 // then use the loaded objects as myObjs.my_loaded_object_file_name.someFunction()
 
 ```
-Notice that all the .js files in the 'myControllers' folder will be required. The index.js is ignored.
+Notice that all the .js files in the 'myobjects' folder will be required. The index.js is ignored.
 
 <b>Set/Use properties</b>
 
