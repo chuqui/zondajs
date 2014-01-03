@@ -3,6 +3,8 @@ ZondaJS
 
 ZondaJS is node.js web framework for building web apps.
 
+This framework is under development. NOT production-ready!
+
 Some of it's features include:
 - MVC
 - Dependency Injection
@@ -19,14 +21,14 @@ TO-DO
 - [x] Controllers
 - [x] Settings/Properties
 - [x] Params parsing (GET/URL routing)
-- [ ] Params parsing (POST/Multipart)
+- [x] Params parsing (POST/Multipart)
 - [x] Views
-- [ ] Upload
+- [x] Upload
 - [ ] Favicon
 - [ ] Sessions
-- [ ] Request object (Raw request with handy methods/properties)
-- [-] Response object (Raw response with handy methods/properties)
-- [-] Error handler
+- [x] Request object (Raw request with handy methods/properties)
+- [x] Response object (Raw response with handy methods/properties)
+- [ ] Error handler
 - [ ] Custom error pages
 
 
@@ -95,10 +97,9 @@ Middleware will get ran for every request, before the controller is called. It r
 var app = require('./zondajs');
 
 // Example of a site under construction middleware
-app.middleware.use(function(request, response){
+app.middleware.use(function(request, response, next){
   response.writeHead(200, {"Content-Type": "text/plain"});
-  response.write("Under construction!");
-  response.end();
+  response.end("Under construction!");
 });
 ```
 
