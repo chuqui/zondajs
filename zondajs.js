@@ -166,6 +166,7 @@ var url     = require("url");
                   zondajs.dispatcher.runNext(request, response, idx+1);
                 }]);
               }else{
+                request.params = request.params || {};
                 request.params = _.defaults(request.params, request.zondajs.controller.params);
                 zondajs.__di.invoke(request.zondajs.controller.method, [request, response]);             
               }

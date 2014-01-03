@@ -3,7 +3,7 @@ var fs = require('fs');
 var _ = require('underscore');
 var utils = require('util');
 
-app.controller.get('/', function(request, response, messageService){
+app.controller.get('/hola', function(request, response, messageService){
     messageService.print();
 
     response.render('demo.ejs', {
@@ -11,10 +11,9 @@ app.controller.get('/', function(request, response, messageService){
     });
 });
 
-app.controller.post('/upload', function(request, response){
+app.controller.get('/upload/:juan', function(request, response){
 
-  console.log(request.params);
-  console.log(request.files);
+  console.log('juan: '+ request.params.juan);
 
   response.render('demo.ejs', {
     title: 'Upload Demo'

@@ -11,10 +11,10 @@ module.exports = function(request, response, next){
     form.autoFiles = true;
 
     form.parse(request, function(err, fields, files){
-      
-      for(var f in fields){
-        fields[f] = (fields[f].length > 1)? fields[f] : fields[f][0];
-      }
+//      console.log(fields);      
+//      for(var f in fields){
+//        fields[f] = (fields[f].length > 1)? fields[f] : fields[f][0];
+//      }
 
       request.params = fields;
       request.files = files;
