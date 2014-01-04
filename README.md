@@ -175,3 +175,10 @@ app.controller.get('/', function(request, response){
 
 API Docs
 --------
+
+
+
+Legal Note
+----------
+
+- Logo and favicon.ico By: Icons Land - http://www.icons-land.com
