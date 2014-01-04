@@ -25,12 +25,15 @@ TO-DO
 - [x] Params parsing (POST/Multipart)
 - [x] Views
 - [x] Upload
+- [x] Cookies
 - [ ] Favicon
 - [ ] Sessions
+- [x] Static files middleware
 - [x] Request object (Raw request with handy methods/properties)
 - [x] Response object (Raw response with handy methods/properties)
-- [ ] Error handler
 - [ ] Custom error pages
+- [ ] Binaries to create the project skeleton
+- [ ] Clean up and publish on NPM repo
 
 
 REF: 
