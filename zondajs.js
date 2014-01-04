@@ -145,9 +145,13 @@ var url     = require("url");
 
                 // get the controller, and if it has route params, the params too.
                 controller = zondajs.__routes.get(parsedURL.pathname, request.method);
+                
+                //console.log(parsedURL.pathname);
+                //console.log(parsedURL.pathname.indexOf('/static/'));
 
-                if(controller){
+                if(controller || parsedURL.pathname.indexOf('/static/') == 0){
                     request.zondajs = {};
+                    request.zondajs.parsedURL = parsedURL;
                     request.zondajs.controller = controller;
                     request.zondajs.params = _.defaults(controller.params, parsedURL.query);
 
