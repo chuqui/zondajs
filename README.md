@@ -26,7 +26,7 @@ TO-DO
 - [x] Views
 - [x] Upload
 - [x] Cookies
-- [ ] Favicon
+- [x] Favicon
 - [ ] Sessions
 - [x] Static files middleware
 - [x] Request object (Raw request with handy methods/properties)
