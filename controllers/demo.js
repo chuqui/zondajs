@@ -35,3 +35,7 @@ app.controller.get('/setcookies', function(request, response){
   request.cookies.set('signed', 'this is ths signed cookie value!!', {signed:true});
   response.end('done');
 });
+
+app.controller.get('/redirecttest', function(request, response){
+  response.redirect('/');
+});
