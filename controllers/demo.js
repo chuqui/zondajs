@@ -20,3 +20,18 @@ app.controller.post('/upload', function(request, response){
     title: 'Upload Demo'
   });
 });
+
+app.controller.get('/cookies', function(request, response){
+  var mycookie = request.cookies.get('mycookie');
+  var signed = request.cookies.get('signed');
+
+  console.log(utils.inspect(mycookie));
+  console.log(utils.inspect(signed));
+  response.end('done');
+});
+
+app.controller.get('/setcookies', function(request, response){
+  request.cookies.set('mycookie', 'this is the value!!');
+  request.cookies.set('signed', 'this is ths signed cookie value!!', {signed:true});
+  response.end('done');
+});
