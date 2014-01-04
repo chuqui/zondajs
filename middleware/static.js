@@ -1,5 +1,4 @@
 var fs = require('fs');
-var path = require('path');
 var mime = require('mime');
 
 module.exports = function(request, response, next){
@@ -12,7 +11,7 @@ module.exports = function(request, response, next){
   if(request.method === 'GET' && filePath.indexOf('/static/') == 0){
     filePath = '.' + filePath;
 
-    path.exists(filePath, function(exists) {
+    fs.exists(filePath, function(exists) {
       if (exists) {
         fs.readFile(filePath, function(error, content) {
           if(error) {
