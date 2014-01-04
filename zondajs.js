@@ -149,7 +149,7 @@ var url     = require("url");
                 //console.log(parsedURL.pathname);
                 //console.log(parsedURL.pathname.indexOf('/static/'));
 
-                if(controller || parsedURL.pathname.indexOf('/static/') == 0){
+                if(controller || parsedURL.pathname.indexOf('/static/') == 0 || parsedURL.pathname == '/favicon.ico'){
                     request.zondajs = {};
                     request.zondajs.parsedURL = parsedURL;
                     request.zondajs.controller = controller;
