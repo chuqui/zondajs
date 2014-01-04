@@ -13,5 +13,11 @@ module.exports = function(request, response, next){
     response.end(ejs.render(html));
   };
 
+
+  response.redirect = function(url){
+    response.writeHead(302, {"Location": url});
+    response.end();
+  };
+
   next(request, response);
 };
