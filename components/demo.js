@@ -15,6 +15,6 @@ app.component('messageService', function(message){
             console.log('Message from the service using dependency injection: ' + message.hello);
         }
     };
-});
+}); 
 
 
