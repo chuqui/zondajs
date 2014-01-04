@@ -1,6 +1,6 @@
 {
   "author": "Humberto Miatello",
-  "name": "ZondaJS",
+  "name": "zondajs",
   "description": "MVC Web Framework with dependency injection",
   "version": "0.1.1",
   "repository": {
