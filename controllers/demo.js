@@ -39,3 +39,13 @@ app.controller.get('/setcookies', function(request, response){
 app.controller.get('/redirecttest', function(request, response){
   response.redirect('/');
 });
+
+
+app.controller.post('/json', function(request, response){
+    request.body = request.body || {};
+
+    var content = JSON.parse(request.body);
+    console.log(content);
+
+    response.end('ok');
+});

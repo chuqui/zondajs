@@ -2,7 +2,10 @@ var formidable = require('formidable');
 var util = require('util');
 
 module.exports = function(request, response, next){
-  if( request.method === 'POST'){
+
+  var ctype = request.headers['content-type'];
+
+  if( ctype && (ctype.indexOf('multipart/form-data') >= 0 || ctype.indexOf('x-www-form-urlencoded') >=0 )){
     
     var form = new formidable.IncomingForm();
 
@@ -21,7 +24,17 @@ module.exports = function(request, response, next){
 
       next(request, response);
     });
+  }else if(ctype.indexOf('application') >= 0){
+    var body = '';
 
+    request.on('data', function(chunk){
+      body += chunk;
+    });
+
+    request.on('end', function(){
+      request.body = body;
+      next(request, response);
+    });
   }else{
     next(request, response);
   }
