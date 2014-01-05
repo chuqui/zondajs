@@ -6,40 +6,30 @@ ZondaJS is node.js web framework for building web apps.
 <b>This framework is under development. NOT production-ready!</b>
 
 Some of it's features include:
-- MVC
-- Dependency Injection
-- Simple yet Powerful
+- MVC.
+- Dependency Injection.
+- Component oriented.
+- Properties.
+- Customizable middleware.
+- Serve static files.
+- Request parameters and body parsing, including multipart/form-data, x-www-form-urlencoded and raw requests.
+- Automatic file uploads.
+- REST support.
+- Cookies support, also with signed cookies.
+- Enhanced request and response objects.
+- Simple yet Powerful.
 
 
 
 TO-DO
 -----
+- Session support (using existing cookies support)
+- Response object (sendFile and sendJSON methods to answer with static files & JSON)
+- Custom error pages
+- Binaries to create the project skeleton
+- Test coverage (also link to travis)
+- Clean up and publish on NPM repo
 
-- [x] Dependency Injection
-- [x] Routing
-- [x] Middleware
-- [x] Folder loader
-- [x] Controllers
-- [x] Settings/Properties
-- [x] Params parsing (GET/URL routing)
-- [x] Params parsing (POST/Multipart)
-- [x] Views
-- [x] Upload
-- [x] Cookies
-- [x] Favicon
-- [ ] Sessions
-- [x] Static files middleware
-- [x] Request object (Raw request with handy methods/properties)
-- [x] Response object (Raw response with handy methods/properties)
-- [ ] Custom error pages
-- [ ] Binaries to create the project skeleton
-- [ ] Clean up and publish on NPM repo
-
-
-REF: 
-- [x] Finished
-- [-] In Progress
-- [ ] Not implemented yet.
 
 
 How To
