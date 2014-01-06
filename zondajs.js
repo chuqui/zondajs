@@ -168,16 +168,14 @@ var url     = require("url");
                             if (exists) {
                                 fs.readFile(filePath, function(error, content) {
                                     if(error) {
-                                        response.writeHead(404);
-                                        response.end();
+                                        response.sendError(404);
                                     }else{    
                                         response.writeHead(200, { 'Content-Type': mime.lookup(filePath) });
                                         response.end(content, 'utf-8');
                                     }
                                 });
                             }else{
-                                response.writeHead(404);
-                                response.end();
+                                response.sendError(404);
                             }
                         });
                     };
@@ -187,9 +185,24 @@ var url     = require("url");
                         response.writeHead(200, {"Content-Type": "application/json"});
                         response.end(JSON.stringify(o));
                     };
+                },
+                sendError: function(response){
+                    return function(code){
+                        var ejs = require('ejs')
+                          , fs = require('fs')
+                          , path = './views/errors/' + code + '.html'
+                          , str = fs.readFileSync(path, 'utf8');
+
+                        var html = ejs.render(str, {});
+
+                        response.writeHead(code, {"Content-Type": "text/html"}); 
+                        response.end(ejs.render(html));
+                    };
+
                 }
             },
             run: function(request, response){
+                response.sendError = zondajs.enhancements.response.sendError(response);
                 response.render = zondajs.enhancements.response.render(response);
                 response.redirect = zondajs.enhancements.response.redirect(response);
                 response.sendJSON = zondajs.enhancements.response.sendJSON(response);
@@ -215,8 +228,7 @@ var url     = require("url");
 
                     zondajs.dispatcher.run(request, response);
                 }else{
-                    response.writeHead(404, {"Content-Type": "text/plain"});
-                    response.end('Not Found');
+                    response.sendError(404);
                  }
             },
             run: function(request, response){
@@ -247,9 +259,7 @@ var url     = require("url");
                     zondajs.dispatcher.dispatch(request, response);
                 }catch(e){
                     console.log(e.stack);
-                    response.writeHead(500, {"Content-Type": "text/plain"});
-                    response.end('Internal Server Error');
- 
+                    response.sendError(500);
                 }
             }).listen(port);
         }
