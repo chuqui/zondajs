@@ -138,6 +138,64 @@ var url     = require("url");
                 }
             });
         },
+        enhancements: {
+            response: {
+                render : function(response){
+                    return function(template, data){
+                        var ejs = require('ejs')
+                          , fs = require('fs')
+                          , path = './views/' + template
+                          , str = fs.readFileSync(path, 'utf8');
+
+                        var html = ejs.render(str, data);
+
+                        response.writeHead(200, {"Content-Type": "text/html"}); 
+                        response.end(ejs.render(html));
+                    };
+                },
+                redirect: function(response){
+                    return function(url){
+                        response.writeHead(302, {"Location": url});
+                        response.end();
+                    };
+                },
+                sendFile: function(response){
+                    return function(filePath){
+                        var fs = require('fs');
+                        var mime = require('mime');
+
+                        fs.exists(filePath, function(exists) {
+                            if (exists) {
+                                fs.readFile(filePath, function(error, content) {
+                                    if(error) {
+                                        response.writeHead(404);
+                                        response.end();
+                                    }else{    
+                                        response.writeHead(200, { 'Content-Type': mime.lookup(filePath) });
+                                        response.end(content, 'utf-8');
+                                    }
+                                });
+                            }else{
+                                response.writeHead(404);
+                                response.end();
+                            }
+                        });
+                    };
+                },
+                sendJSON: function(response){
+                    return function(o){
+                        response.writeHead(200, {"Content-Type": "application/json"});
+                        response.end(JSON.stringify(o));
+                    };
+                }
+            },
+            run: function(request, response){
+                response.render = zondajs.enhancements.response.render(response);
+                response.redirect = zondajs.enhancements.response.redirect(response);
+                response.sendJSON = zondajs.enhancements.response.sendJSON(response);
+                response.sendFile = zondajs.enhancements.response.sendFile(response);
+            }
+        },
         dispatcher: {
             dispatch: function(request, response){
                 // parse the URL with the URL lib
@@ -177,12 +235,15 @@ var url     = require("url");
             }
         },
         startApp: function(port){
+
+
             zondajs.load('./middleware', function(name, mid){
                 zondajs.middleware.use(mid);
             });
 
             http.createServer(function(request, response) {
                 try{
+                    zondajs.enhancements.run(request, response);
                     zondajs.dispatcher.dispatch(request, response);
                 }catch(e){
                     console.log(e.stack);
