@@ -24,7 +24,6 @@ Some of it's features include:
 TO-DO
 -----
 - Session support (using existing cookies support)
-- Response object (sendFile and sendJSON methods to answer with static files & JSON)
 - Binaries to create the project skeleton
 - Test coverage (also link to travis)
 - Clean up and publish on NPM repo
