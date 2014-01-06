@@ -24,7 +24,7 @@ module.exports = function(request, response, next){
 
       next(request, response);
     });
-  }else if(ctype.indexOf('application') >= 0){
+  }else if(ctype && ctype.indexOf('application') >= 0){
     var body = '';
 
     request.on('data', function(chunk){
