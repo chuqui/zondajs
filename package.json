@@ -7,6 +7,9 @@
     "url": "https://github.com/chuqui/zondajs"
   },
   "main": "./zondajs.js",
+  "scripts" : {
+    "test" : "mocha -R spec"
+  },
   "keywords": [
     "mvc",
     "dependency",
@@ -21,6 +24,9 @@
     "cookies":"0.3.8",
     "keygrip":"1.0.0",
     "mime": "1.2.11"
+  },
+  "devDependencies" : {
+    "mocha" : "1.16.2"
   },
   "engines": {
     "node": ">=0.8.x"
