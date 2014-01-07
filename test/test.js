@@ -1,6 +1,6 @@
 var assert = require("assert")
 
-describe('Runung zondajs tests', function(){
+describe('Running zondajs tests', function(){
   describe('Router tests', function(){
     it('zondajs.__router must be defined', function(){
      
