@@ -1,11 +1,10 @@
-ZondaJS
-=======
+# ZondaJS
 
 ZondaJS is node.js web framework for building web apps.
 
 <b>This framework is under development. NOT production-ready!</b>
 
-Some of it's features include:
+## Features
 - MVC.
 - Dependency Injection.
 - Component oriented.
@@ -21,8 +20,7 @@ Some of it's features include:
 
 
 
-TO-DO
------
+## TO-DO
 - Session support (using existing cookies support)
 - Binaries to create the project skeleton
 - Test coverage (also link to travis)
@@ -30,8 +28,7 @@ TO-DO
 
 
 
-How To
-------
+## How To
 
 <b>Load your code folders</b>
 
@@ -161,8 +158,7 @@ app.controller.get('/', function(request, response){
 ```
 
 
-API Docs
---------
+# API Docs
 
 
 
