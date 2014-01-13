@@ -1,9 +1,8 @@
-// ignore this file, it's only used for quick concept testing
-// this file will get deleted
-
 var app = require('./zondajs');
 
-console.log("Application started");
+zondajs.load('./middleware', function(name, mid){
+  zondajs.middleware.use(mid);
+});
 
 app.load('./components', function(name, req){
   console.log('component file loaded: \t'+name);

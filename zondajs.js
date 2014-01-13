@@ -252,12 +252,6 @@ var url     = require("url");
             }
         },
         startApp: function(port){
-
-
-            zondajs.load('./middleware', function(name, mid){
-                zondajs.middleware.use(mid);
-            });
-
             http.createServer(function(request, response) {
                 try{
                     zondajs.enhancements.run(request, response);

@@ -10,6 +10,10 @@
   "scripts" : {
     "test" : "mocha -R spec"
   },
+  "preferGlobal": "true",
+  "bin": {
+    "zondajs" : "bin/zondajs.js"
+  },
   "keywords": [
     "mvc",
     "dependency",
