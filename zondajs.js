@@ -98,10 +98,15 @@ var url     = require("url");
                 });
             },
             get: function(key){
-                // this will fail if the key isn't found
-                return _.find(zondajs.properties.map, function(entry){
+                var prop =  _.find(zondajs.properties.map, function(entry){
                     return (entry.key == key);
-                }).value;
+                });
+
+                if(prop){
+                  return prop.value;
+                }else{
+                  return undefined;
+                }
             }
         },
         component:  function(name, object){
