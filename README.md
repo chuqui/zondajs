@@ -23,7 +23,6 @@ ZondaJS is node.js web framework for building web apps.
 ### TO-DO
 - Session support (using existing cookies support)
 - Binaries to create the project skeleton
-- Test coverage (also link to travis)
 - Clean up and publish on NPM repo
 
 
