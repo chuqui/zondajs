@@ -139,7 +139,7 @@ var url     = require("url");
             require('fs').readdirSync(dir + '/').forEach(function(file) {
                 if (file.match(/.+\.js/g) !== null && file !== 'index.js') {
                     var name = file.replace(/.js/g, '');
-                    callback(name, require( dir + '/' + file));
+                    callback(name, dir + '/' + file);
                 }
             });
         },
