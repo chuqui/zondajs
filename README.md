@@ -62,12 +62,11 @@ Or even imagine it comes from a Service (using dependency injection):
 ```javascript
 var app = require('zondajs');
 
-app.component('messageService', function(){
-	return {
-			getGreeting : function(){
-				return "Hello World":
-			}
-		};
+app.component('messageService', 
+	{
+		getGreeting : function(){
+			return "Hello World":
+	}
 });
 
 app.controller.get('/', function(request, response, messageService){
