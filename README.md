@@ -66,8 +66,9 @@ app.component('messageService',
 	{
 		getGreeting : function(){
 			return "Hello World":
+		}
 	}
-});
+);
 
 app.controller.get('/', function(request, response, messageService){
     response.end(messageService.getGreeting());
