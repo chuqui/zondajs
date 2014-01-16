@@ -93,14 +93,138 @@ $ zondajs
 The command will ask you some basic data to build a default package.json file.
 It will ask:
 - Project name
-- Project author
-- Version
+- Project description 
+- Author
+
+After the project is created, you can start it by running
+
+```sh
+node app.js
+```
+And open a browser at http://localhost:8080
 
 ### Execution Flow
+
+The following happens in ZondaJs when a request get to the server
+1. The raw Node request and response objects are enhanced.
+2. The URL is parsed with the node url module.
+3. Zonda looks for a controller, based on the requested URL and method.
+4. The components are injected recursively, if any.
+5. The route named params are extracted and added to the request.params object.
+6. The query string params are added to the request.params object.
+7. All the middleware is ran. Without any default order.
+8. The controller is ran.
+9. The response is sent. Once the first step is completed, any other step has access to the rendering, in order to send errors, redirections, files, etc.
+
 ### Dependency Injection
+
+By Wikipedia: Dependency injection is a software design pattern that allows the removal of hard-coded dependencies and makes it possible to change them, whether at run-time or compile-time.
+
+In ZondaJS, dependency injection is implemented by a key-object set, and triggered by the dispatcher when a controller that matches the requested URL is found.
+
+You can set a new candidate component for dependency injection by usign the ZondaJS's component object. See more on components.
+
+This way, you don't need to rewrite or repeat code. You only need to write it once as component and then, inject it whereever you need it.
+
 ### Middleware
+
+Middleware are functions that get ran for every request, before the controller method is called.
+
+Middleware is really usefull to prepare the request and response objects for your need.
+
+As you have access to the full request and response objects, you can also render, redirect, validate, write a file, return an error page and any other task you could imagine doing.
+
 ### Routing
+
+Routing in ZondaJS is pretty simple. It supports the GET, POST, PUT and DELETE HTTP methods.
+
+You can match the exact url by typing it in your controller or use wildcards with the :name format.
+
+```javascript
+app.controller.get('/', function(request, response){response.end();});
+// matches url / and only for GET requests
+app.controller.post('/', function(request, response){response.end();});
+// matches the / url only for POST requests
+
+app.controller.get('/:all', function(request, response){response.end();});
+// matches: 
+//  /product
+//  /product/12
+//  /product/shoes/the-shoes-i-like
+
+app.controller.get('/product/:id', function(request, response){response.end();});
+// matches: 
+//  /product/12
+//  /product/shoes/the-shoes-i-like
+// it does not match:
+//  /product
+//  /product/
+//  /anyother
+
+app.controller.get('/product/:category/:id', function(request, response){response.end();});
+// matches
+//  /product/shoes/12
+//  /product/beers/frozen
+// doesn't match
+//  /product/beer
+//  /product
+
+```
+And so on.
+An important feature is that you can access that named value from your request.
+```javascript
+app.controller.get('/product/:category/:id', function(request, response){
+  console.log(request.params.category);
+  console.log(request.params.id)
+  response.end();
+});
+
+```
+
 ### Rendering
+
+By default, ZondaJS uses EJS for rendering. Read more on EJS.
+
+You can render at any point of the execution, actually after the step 1 (See execution flow),  and there are a couple of handy methods:
+
+```javascript
+var data = {
+  title: 'Rendering',
+  animals: [
+    "Dog",
+    "Cat",
+    "Monkey"
+  ]
+};
+response.render('mytemplate', data);
+// renders the data object into the provided template
+
+response.sendError(404);
+// renders the 404 custom error page
+
+response.sendJSON(data);
+// returns the data serialized with JSON format and content-type.
+
+```
+
+<b>Modifying the default rendering engine.</b>
+
+Anyways, you can override the zondajs.enhancements.response object to use the rendering engine you like. This would be like:
+```javascript
+app.enhancements.response.render = function(response){
+  return function(template, data){
+    // Do your rendering stuff
+  };
+};
+
+app.enhancements.response.sendError = function(response){
+  return function(code){
+    //do your rendering stuff here
+    //in this case, we need to fetch the templates from /views/errors/
+  };
+};
+```
+
 ### Loader
 ### Custom Error Pages
 ### Static files
