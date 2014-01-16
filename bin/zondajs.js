@@ -1,6 +1,15 @@
 #!/usr/bin/env node
 var fs = require('fs');
+var readline = require('readline');
+var rl = readline.createInterface(process.stdin, process.stdout);
 var tpl = __dirname + '/../template/';
+
+console.log('--------------------------------');
+console.log('--- Creating ZondaJS Project ---');
+console.log('--------------------------------');
+console.log('');
+console.log('------ Creating project skeleton');
+console.log('');
 
 fs.mkdirSync('./components');
 console.log('Components folder created...');
@@ -33,7 +42,52 @@ console.log('Uploads folder created...');
 
 
 fs.createReadStream(tpl + 'app.js').pipe(fs.createWriteStream('./app.js'));
-fs.createReadStream(tpl + 'package.json').pipe(fs.createWriteStream('./package.json'));
 
-console.log('-------------------------------');
-console.log('--- ZondaJS Project Created ---');
+console.log('');
+console.log('------ Creating package.json');
+console.log('');
+
+var packjson = {
+  "author": "",
+  "name": "",
+  "description": "",
+  "version": "0.0.1",
+  "dependencies": {
+    "underscore": "1.5.2",
+    "ejs":"0.8.5",
+    "formidable":"1.0.14",
+    "cookies":"0.3.8",
+    "keygrip":"1.0.0",
+    "mime": "1.2.11"
+  },
+  "engines": {
+    "node": ">=0.8.x"
+  }
+};
+
+rl.question('Project name: ', function(name) {
+  packjson.name = name;
+  rl.question('Project description: ', function(desc) {
+    packjson.description = desc;
+    rl.question('Project Author: ', function(author) {
+      packjson.author = author;
+      fs.createWriteStream('./package.json').end(JSON.stringify(packjson));
+      
+      console.log('');
+      console.log('------ Installing dependencies, please wait....');
+      console.log('');
+
+      var exec = require('child_process').exec
+      exec('npm install', function(error, stdout, stderr){
+        process.stdout.write(stdout);
+
+        console.log('');
+        console.log('');
+        console.log('------ Project created, enjoy :)');
+        process.exit();
+      });
+
+    });
+  });
+});
+

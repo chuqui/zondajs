@@ -79,7 +79,23 @@ app.startApp(8080);
 
 ## Topics
 ### Installation
+
+Not available right now :S
+
 ### Project Creation
+
+Just run the zondajs command and it will drive you to the creation process.
+
+```sh
+$ zondajs
+```
+
+The command will ask you some basic data to build a default package.json file.
+It will ask:
+- Project name
+- Project author
+- Version
+
 ### Execution Flow
 ### Dependency Injection
 ### Middleware
