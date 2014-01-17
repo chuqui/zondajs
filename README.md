@@ -5,6 +5,9 @@ ZondaJS is node.js web framework for building web apps.
 
 <b>This framework is under development. NOT production-ready!</b>
 
+
+For a better experience, read this doc at http://documentup.com/chuqui/zondajs
+
 ### Introduction
 Zonda is a <b>powerful</b>, <b>dry</b> wind.
 ZondaJS starts as a project to support an startup I'm working. I needed a couple or features for it, such us:
@@ -113,23 +116,23 @@ And open a browser at http://localhost:8080
 
 The following happens in ZondaJs when a request get to the server:
 
-* The raw Node [request](#request) and [response](#response) objects are enhanced.
+* The raw Node [request](#api-docs/request) and [response](#api-docs/response) objects are enhanced.
 * The URL is parsed with the [node url module](http://nodejs.org/api/url.html).
-* Zonda looks for a [controller](#controllers), based on the requested URL and method.
-* The [components](#components) are injected recursively, if any.
-* The [route](#routing) named params are extracted and added to the request.params object.
+* Zonda looks for a [controller](#api-docs/controllers), based on the requested URL and method.
+* The [components](#api-docs/components) are injected recursively, if any.
+* The [route](#topics/routing) named params are extracted and added to the request.params object.
 * The query string params are added to the request.params object.
-* All the [middleware](#middleware-1) is ran. Without any default order.
-* The [controller](#controllers) is ran.
-* The [response](#response) is sent. Once the first step is completed, any other step has access to the [rendering](#rendering), in order to send errors, redirections, files, etc.
+* All the [middleware](#api-docs/middleware) is ran. Without any default order.
+* The [controller](#api-docs/controllers) is ran.
+* The [response](#api-docs/response) is sent. Once the first step is completed, any other step has access to the [rendering](#topics/rendering), in order to send errors, redirections, files, etc.
 
 ### Dependency Injection
 
 By Wikipedia: Dependency injection is a software design pattern that allows the removal of hard-coded dependencies and makes it possible to change them, whether at run-time or compile-time.
 
-In ZondaJS, dependency injection is implemented by a key-object set, and triggered by the dispatcher when a [controller](#controllers) that matches the requested URL is found.
+In ZondaJS, dependency injection is implemented by a key-object set, and triggered by the dispatcher when a [controller](#api-docs/controllers) that matches the requested URL is found.
 
-You can set a new candidate component for dependency injection by usign the [ZondaJS's component object](#components).
+You can set a new candidate component for dependency injection by usign the [ZondaJS's component object](#api-docs/components).
 
 This way, you don't need to rewrite or repeat code. You only need to write it once as component and then, inject it whereever you need it.
 
@@ -139,7 +142,7 @@ Middleware are functions that get ran for every request, before the controller m
 
 Middleware is really usefull to prepare the request and response objects for your need.
 
-As you have access to the full [request](#request) and [response](#response) objects, you can also render, redirect, validate, write a file, return an error page and any other task you could imagine doing.
+As you have access to the full [request](#api-docs/request) and [response](#api-docs/response) objects, you can also render, redirect, validate, write a file, return an error page and any other task you could imagine doing.
 
 ### Routing
 
