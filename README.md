@@ -9,12 +9,12 @@ ZondaJS is node.js web framework for building web apps.
 Zonda is a 'powerful' 'dry' wind.
 ZondaJS starts as a project to support an startup I'm working. I needed a couple or features for it, such us:
 
-* Small footprint. You know, if you are responsible for a project, you need to know every detail on what you are usign.
-* Customizable. I want to be able, without pain, to use the what I want to use and not what the framework makes me use.
-* Skeleton oriented. I don't want to have 1 big .js file with all the controllers nor being requiring a lot of files.
-* Component oriented. I really like having architecture. Having Controllers, Services, DTOs, Mappers, Models etc, etc.. will allow to find & fix issues and scale much faster.
-* Simple to use. I wanted something declarative and well organized, without "magic" behind.
-* API cappable. Support for building REST services without pain.
+* <b>Small footprint.</b> You know, if you are responsible for a project, you need to know every detail on what you are usign.
+* <b>Customizable.</b> I want to be able, without pain, to use the what I want to use and not what the framework makes me use.
+* <b>Skeleton oriented.</b> I don't want to have 1 big .js file with all the controllers nor being requiring a lot of files.
+* <b>Component oriented.</b> I really like having architecture. Having Controllers, Services, DTOs, Mappers, Models etc, etc.. will allow to find & fix issues and scale much faster.
+* <b>Simple to use.</b> I wanted something declarative and well organized, without "magic" behind.
+* <b>API cappable.</b> Support for building REST services without pain.
 
 ### Features
 
@@ -84,7 +84,8 @@ app.startApp(8080);
 ## Topics
 ### Installation
 
-Not available right now :S
+Not available right now.
+It'll be available on the npm repo soon... ;)
 
 ### Project Creation
 
@@ -96,9 +97,10 @@ $ zondajs
 
 The command will ask you some basic data to build a default package.json file.
 It will ask:
-- Project name
-- Project description 
-- Author
+
+* Project name
+* Project description 
+* Author
 
 After the project is created, you can start it by running
 
