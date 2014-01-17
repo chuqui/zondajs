@@ -268,7 +268,7 @@ Let me know if you are using ZondaJS. I wanna know what's your opinion and how c
 
 ## Known Issues
 
-Check the ZondaJS's github issues page.
+Check the [ZondaJS's github issues page](https://github.com/chuqui/zondajs/issues)
 
 ## License
 
