@@ -227,7 +227,21 @@ app.enhancements.response.sendError = function(response){
 
 ### Loader
 ### Custom Error Pages
+
+ZondaJS supports Custom Error pages. When you create a ZondaJS project you will find a views/errors folder in your project path.
+Error pages are plain HTML pages, with no binding or templating. This ensures you can send an error and render the error page from any point within your application.
+By default, we include 3 (really simple) error pages.
+- 400.html
+- 404.html
+- 500.html
+
+Of course, you can add more pages and customize their contents in order to make them match your branding/ideas.
+
 ### Static files
+
+We highly recommend to serve static files from CDN or having apache, nginx, cherokee or the server you like for doing this tasks.
+
+Anyways, in order to let you run faster, we included a middleware called "static" which serve the files placed on the static folder.
 
 ## API Docs
 ### Components
@@ -242,6 +256,13 @@ app.enhancements.response.sendError = function(response){
 ### Launcher
 
 ## More Info
+
+Let me know if you are using ZondaJS. I wanna know what's your opinion and how can we improve the framework!.
+
+## Known Issues
+
+Check the ZondaJS's github issues page.
+
 ## License
 
 This project is licensed under the MIT license. Read the LICENSE file for more info on it.
