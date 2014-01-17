@@ -6,7 +6,7 @@ ZondaJS is node.js web framework for building web apps.
 <b>This framework is under development. NOT production-ready!</b>
 
 ### Introduction
-Zonda is a <b>'powerful' 'dry'</b> wind.
+Zonda is a <b>powerful</b>, <b>dry</b> wind.
 ZondaJS starts as a project to support an startup I'm working. I needed a couple or features for it, such us:
 
 * <b>Small footprint.</b> You know, if you are responsible for a project, you need to know every detail on what you are usign.
