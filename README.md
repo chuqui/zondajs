@@ -8,6 +8,7 @@ ZondaJS is node.js web framework for building web apps.
 ### Introduction
 Zonda is a 'powerful' 'dry' wind.
 ZondaJS starts as a project to support an startup I'm working. I needed a couple or features for it, such us:
+
 * Small footprint. You know, if you are responsible for a project, you need to know every detail on what you are usign.
 * Customizable. I want to be able, without pain, to use the what I want to use and not what the framework makes me use.
 * Skeleton oriented. I don't want to have 1 big .js file with all the controllers nor being requiring a lot of files.
@@ -16,6 +17,7 @@ ZondaJS starts as a project to support an startup I'm working. I needed a couple
 * API cappable. Support for building REST services without pain.
 
 ### Features
+
 * MVC.
 * Dependency Injection.
 * Component oriented.
@@ -28,6 +30,7 @@ ZondaJS starts as a project to support an startup I'm working. I needed a couple
 * Dead-Simple
 
 ### TO-DO
+
 * Session middleware (using existing cookies support)
 * Clean up and publish on NPM repo
 
@@ -106,7 +109,8 @@ And open a browser at http://localhost:8080
 
 ### Execution Flow
 
-The following happens in ZondaJs when a request get to the server
+The following happens in ZondaJs when a request get to the server:
+
 * The raw Node request and response objects are enhanced.
 * The URL is parsed with the node url module.
 * Zonda looks for a controller, based on the requested URL and method.
