@@ -99,22 +99,22 @@ It will ask:
 After the project is created, you can start it by running
 
 ```sh
-node app.js
+$ node app.js
 ```
 And open a browser at http://localhost:8080
 
 ### Execution Flow
 
 The following happens in ZondaJs when a request get to the server
-1. The raw Node request and response objects are enhanced.
-2. The URL is parsed with the node url module.
-3. Zonda looks for a controller, based on the requested URL and method.
-4. The components are injected recursively, if any.
-5. The route named params are extracted and added to the request.params object.
-6. The query string params are added to the request.params object.
-7. All the middleware is ran. Without any default order.
-8. The controller is ran.
-9. The response is sent. Once the first step is completed, any other step has access to the rendering, in order to send errors, redirections, files, etc.
+* The raw Node request and response objects are enhanced.
+* The URL is parsed with the node url module.
+* Zonda looks for a controller, based on the requested URL and method.
+* The components are injected recursively, if any.
+* The route named params are extracted and added to the request.params object.
+* The query string params are added to the request.params object.
+* All the middleware is ran. Without any default order.
+* The controller is ran.
+* The response is sent. Once the first step is completed, any other step has access to the rendering, in order to send errors, redirections, files, etc.
 
 ### Dependency Injection
 
