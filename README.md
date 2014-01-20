@@ -10,14 +10,15 @@ For a better experience, read this doc at http://documentup.com/chuqui/zondajs
 
 ### Introduction
 Zonda is a <b>powerful</b>, <b>dry</b> wind.
-ZondaJS starts as a project to support an startup I'm working. I needed a couple or features for it, such us:
+ZondaJS starts as a project to support an startup I'm working. I needed a couple of features for it, such us:
 
-* <b>Small footprint.</b> You know, if you are responsible for a project, you need to know every detail on what you are usign.
+* <b>Small footprint.</b> You know, if you are responsible for a project, you need to know every detail on what you are usign. Having a small footprint allows you to know whats happening without becoming crazy or spending hours or even days reading code.
 * <b>Customizable.</b> I want to be able, without pain, to use the what I want to use and not what the framework makes me use.
 * <b>Skeleton oriented.</b> I don't want to have 1 big .js file with all the controllers nor being requiring a lot of files.
 * <b>Component oriented.</b> I really like having architecture. Having Controllers, Services, DTOs, Mappers, Models etc, etc.. will allow to find & fix issues and scale much faster.
 * <b>Simple to use.</b> I wanted something declarative and well organized, without "magic" behind.
 * <b>API cappable.</b> Support for building REST services without pain.
+* <b>Though for big projects.</b> The way it works and the set of features makes it ideal for big projects.
 
 ### Features
 
