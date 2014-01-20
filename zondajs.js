@@ -63,7 +63,7 @@ var url     = require("url");
                     return rx.test(path);
                 });
 
-                if(candidate != undefined){
+                if(typeof candidate !== 'undefined'){
                     var rx1 = new RegExp(zondajs.__routes.config.namedRegex);
                     var paramNames = candidate.path.match(rx1);
                     var paramValues = rx.exec(path);
@@ -103,7 +103,7 @@ var url     = require("url");
                     return (entry.key == key);
                 });
 
-                if(candidate != undefined){
+                if(typeof candidate !== 'undefined'){
                     return candidate.value;
                 }else{
                     return candidate;
@@ -134,7 +134,7 @@ var url     = require("url");
                 var keys = zondajs.__di.identifyParams(callable);
                 _.each(keys, function(key){
                     var dependency = zondajs.__di.get(key);
-                    if(dependency!=undefined){
+                    if(typeof dependency !== 'undefined'){
                         if(dependency instanceof Function){
                             params.push(dependency.apply(this, zondajs.__di.getDependencies(dependency)));
                         }else{
@@ -151,7 +151,7 @@ var url     = require("url");
              *
              */
             invoke: function(callable, hooks){
-                if(hooks != undefined){
+                if(typeof hooks !== 'undefined'){
                     callable.apply(this, _.union(hooks, zondajs.__di.getDependencies(callable)));
                 }else{
                     callable.apply(this, zondajs.__di.getDependencies(callable));
@@ -184,7 +184,7 @@ var url     = require("url");
              */ 
             get: function(key){
                 var prop =  _.find(zondajs.properties.map, function(entry){
-                    return (entry.key == key);
+                    return (entry.key === key);
                 });
 
                 if(prop){
@@ -380,7 +380,7 @@ var url     = require("url");
                 //console.log(parsedURL.pathname);
                 //console.log(parsedURL.pathname.indexOf('/static/'));
 
-                if(controller || parsedURL.pathname.indexOf('/static/') == 0 || parsedURL.pathname == '/favicon.ico'){
+                if(controller || parsedURL.pathname.indexOf('/static/') === 0 || parsedURL.pathname === '/favicon.ico'){
                     request.zondajs = {};
                     request.zondajs.parsedURL = parsedURL;
                     request.zondajs.controller = controller;
