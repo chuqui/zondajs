@@ -237,6 +237,20 @@ app.enhancements.response.sendError = function(response){
 ```
 
 ### Loader
+
+ZondaJS comes with a load function that enables you yo load dinamically your project files.
+
+The loader is not actually a loader but a file indexer, so when you load a folder, it will call you callback function giving it the complete relative path to the .js files in it (require ready path). Then you can decide if require them or not.
+
+```javascript
+app.load('./controllers', function(name, filepath){
+  console.log(name + ' controller about to be loaded');
+  require(filepath);
+  console.log(name + ' loaded');
+});
+
+```
+
 ### Custom Error Pages
 
 ZondaJS supports Custom Error pages. When you create a ZondaJS project you will find a views/errors folder in your project path.
@@ -257,16 +271,260 @@ We highly recommend to serve static files from CDN or having apache, nginx, cher
 Anyways, in order to let you run faster, we included a middleware called "static" which serve the files placed on the static folder.
 
 ## API Docs
+
+I really encourage you to read the code, it has comments for every object created. You will end up with a much better understanding of the framework than by looking at the provided functions.
+
+<b>Conventions for this docs</b>
+
+The following function 'functionName' return undefined and takes parameter1 and parameter2 as it's parameters
+
+<b>functionName(parameter1, parameter2)</b>
+
+The following function 'functionName' return an object and takes parameter1 as it's parameters
+
+<b>object: functionName(parameter1)</b>
+
 ### Components
+
+<b>app.component(componentName, componentImplementation)</b>
+Where:
+
+* <b>componentName</b> is the name or key used to inject the component.
+* <b>componentImplementation</b> is the object to be returned. See below more on functions.
+
+```javascript
+// lets start with a really simple component called "simpleComponent"
+app.component('simpleComponent', {
+  greeting : "Hello world!"
+});
+
+// lets make this component a bit smarter
+app.component('simpleComponentSmarter', {
+  greeting : "Hello world!"
+  sayHello: function(){
+    console.log(this.greeting);
+  }
+});
+
+/** 
+ * We have been creating components by declaring them as objects, but there is a
+ * really powerfull feature here.
+ * 
+ * We can inject an existing component to another component!
+ * In that case, we need to use a function which returns the actual object
+ */
+
+// We set an existing component name as parameter
+app.component('greetingMessage', function(simpleComponent){
+  return {
+    sayHello: function(){
+      // then we can just use it
+      console.log(simpleComponent.greeting);
+    }
+  };
+});
+
+```
+
+So, <b>Why we need to return an object?</b>
+When the dispatcher start injecting the dependencies, it will run the component by providing it's parameters and use the result to be injected as object.
+Then, ZondaJS does not inject functions, but only inject objects.
+
 ### Properties
+
+<b>app.properties.set(key, value)</b>
+Where:
+
+* <b>key</b> is the key used to identify the property value.
+* <b>value</b> is the object returned when the property key is fetched.
+
+<b>object : app.properties.get(key, value)</b>
+Where:
+
+* <b>key</b> is the key of the property you want to get.
+
+If no property is found for the given key, undefined will be returned instead.
+
 ### Loader
+
+<b>app.load(path, callback)</b>
+Where:
+
+* <b>path</b> is the relative route to the folder you want to index.
+* <b>callback</b> is function that receives 2 params.
+
+* <b>callback(name, relativePath)</b>
+*   name is the file name (e.g. cookies)
+*   relativePath is the require ready path to the file (e.g. './components/cookies.js')
+
+As seen before, the loader is not actually a loader but a file indexer, so when you load a folder, it will call you callback function giving it the complete relative path to the .js files in it (require ready path). Then you can decide if require them or not.
+
+```javascript
+app.load('./controllers', function(name, filepath){
+  console.log(name + ' controller about to be loaded');
+  require(filepath);
+  console.log(name + ' loaded');
+});
+
+// another kind of loader to save everything into an object
+var myStuff = {};
+app.load('./myStuff', function(name, filepath){
+  console.log(name + ' controller about to be loaded');
+  myStuff[name] = require(filepath);
+  console.log(name + ' loaded');
+});
+
+// then you can access it by doing something like:
+myStuff.myModule.myFunction();
+
+```
+
 ### Controllers
+
+The app.controllers object let you add controllers based on the method you want to map. All the functions in the mentioned object receive 2 parameters, the path and the controller implementation. 
+Basically, they add the controller to the routes array with the data required to be mapped and ran when a server request match the route.
+
+A HTTP GET controller
+<b>app.controller.get(path, controllerImplementation)</b>
+Where:
+
+* <b>path</b> is the controller path where the controller implementation will be mapped to.
+* <b>controllerImplementation</b> is function that receives at least 2 params, request and response. If it receives more parameters, they will be injected based on the parameter name
+
+
+A HTTP GET controller
+<b>app.controller.get(path, controllerImplementation)</b>
+Where:
+
+* <b>path</b> is the controller path where the controller implementation will be mapped to.
+* <b>controllerImplementation</b> is function that receives at least 2 params, request and response. If it receives more parameters, they will be injected based on the parameter name
+
+
+A HTTP POST controller
+<b>app.controller.post(path, controllerImplementation)</b>
+Where:
+
+* <b>path</b> is the controller path where the controller implementation will be mapped to.
+* <b>controllerImplementation</b> is function that receives at least 2 params, request and response. If it receives more parameters, they will be injected based on the parameter name
+
+
+A HTTP PUT controller
+<b>app.controller.put(path, controllerImplementation)</b>
+Where:
+
+* <b>path</b> is the controller path where the controller implementation will be mapped to.
+* <b>controllerImplementation</b> is function that receives at least 2 params, request and response. If it receives more parameters, they will be injected based on the parameter name
+
+
+A HTTP DELETE controller
+<b>app.controller.del(path, controllerImplementation)</b>
+Where:
+
+* <b>path</b> is the controller path where the controller implementation will be mapped to.
+* <b>controllerImplementation</b> is function that receives at least 2 params, request and response. If it receives more parameters, they will be injected based on the parameter name
+
 ### Views
+
+ZondaJS uses EJS for views. Check the EJS site for more info.
+
+You can always modify it to use the rendering engine you like. See Rendering section above.
+
 ### Middleware
+
+Middlewares are functions that are going to be ran for every request.
+Middleware have access to the request and response object, both for reading and writing purpose.
+When a middleware is done doing its activity, it must call a callback function, passing the request and response objects.
+
+Adds a middleware
+<b>app.middleware.use(middlewareFunction)</b>
+Where:
+
+* <b>middlewareFunction</b> is the function that implement the middleware functionality.
+
+Also, <b>middlewareFunction</b> is expected to be like:
+<b>function(request, response, next)</b>
+Where:
+
+* <b>request</b> is current request object.
+* <b>response</b> is current response object.
+* <b>next</b> is the callback function to be called when the middleware has ended doing it's tasks. It receives the request and response objects.
+
 ### Response
+
+ZondaJS uses the same HTTP server module node provides.
+It adds some handy methods, know internally as enhancements, to facilitate the developer tasks.
+
+Rendering a view
+<b>response.render(template, dataObject)</b>
+Where:
+
+* <b>templateName</b> is the template file to render to.
+* <b>dataObject</b> is the object containing the information (property-value) to be rendered.
+
+
+Rendering JSON
+<b>response.sendJSON(dataObject)</b>
+Where:
+
+* <b>dataObject</b> is the object containing the information (property-value) to be serialized and rendered.
+
+
+Rendering a custom error page
+<b>response.sendError(errorCode)</b>
+Where:
+
+* <b>errorCode</b> is HTTP error code. Notice also that a HTML file must exist in the views/errors/ folder with the errorCode as file name (e.g. 404.html)
+
+
+Answering the request with a file.
+<b>response.sendFile(filePath)</b>
+Where:
+
+* <b>filePath</b> is the path to the file to be returned.
+
+
+Sending a redirection:
+<b>response.redirect(path)</b>
+Where:
+
+* <b>path</b> is the path/URL to be redirected to.
+
 ### Request
+
+Same as the response object. The request object comes from Node's HTTP module. Here are some enhancements on it.
+
+It exposes a params object containingd the parameters (from named params, querystring and post methods)
+<b>request.params</b>
+
+If you are expecting a request body, it is available by:
+<b>request.body</b>
+
+If you are doing file uploads, it exposes an array with all the files:
+<b>request.files</b>
+
+If you are handling cookies, a cookies object is exposed:
+<b>request.cookies</b>
+
 ### Internal Data
+
+If you check the ZondaJS source code, you will find 2 more objects:
+
+* <b>__routes</b> is the route handler.
+* <b>__di</b> is the dependency injection manager.
+
+These objects are meant to be private. Don't modify them unless you completely know what you are doing.
+
 ### Launcher
+
+Finally, but not least, ZondaJS exposes the most important function.
+
+Launching the app.
+<b>app.startApp(port)</b>
+Where:
+
+* <b>port</b> is the port the server will listen for requests.
+
+
 
 ## More Info
 
