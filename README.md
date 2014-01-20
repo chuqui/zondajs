@@ -123,7 +123,7 @@ The following happens in ZondaJs when a request get to the server:
 * The [components](#api-docs/components) are injected recursively, if any.
 * The [route](#topics/routing) named params are extracted and added to the request.params object.
 * The query string params are added to the request.params object.
-* All the [middleware](#api-docs/middleware) is ran. Without any default order.
+* All the [middleware](#api-docs/middleware) are ran. Without any default order.
 * The [controller](#api-docs/controllers) is ran.
 * The [response](#api-docs/response) is sent. Once the first step is completed, any other step has access to the [rendering](#topics/rendering), in order to send errors, redirections, files, etc.
 
@@ -284,6 +284,8 @@ The following function 'functionName' return an object and takes parameter1 as i
 
 <b>object: functionName(parameter1)</b>
 
+
+
 ### Components
 
 <b>app.component(componentName, componentImplementation)</b>
@@ -327,6 +329,7 @@ app.component('greetingMessage', function(simpleComponent){
 ```
 
 So, <b>Why we need to return an object?</b>
+
 When the dispatcher start injecting the dependencies, it will run the component by providing it's parameters and use the result to be injected as object.
 Then, ZondaJS does not inject functions, but only inject objects.
 
@@ -382,9 +385,11 @@ myStuff.myModule.myFunction();
 ### Controllers
 
 The app.controllers object let you add controllers based on the method you want to map. All the functions in the mentioned object receive 2 parameters, the path and the controller implementation. 
+
 Basically, they add the controller to the routes array with the data required to be mapped and ran when a server request match the route.
 
-A HTTP GET controller
+<b>A HTTP GET controller</b>
+
 <b>app.controller.get(path, controllerImplementation)</b>
 Where:
 
@@ -392,15 +397,8 @@ Where:
 * <b>controllerImplementation</b> is function that receives at least 2 params, request and response. If it receives more parameters, they will be injected based on the parameter name
 
 
-A HTTP GET controller
-<b>app.controller.get(path, controllerImplementation)</b>
-Where:
+<b>A HTTP POST controller</b>
 
-* <b>path</b> is the controller path where the controller implementation will be mapped to.
-* <b>controllerImplementation</b> is function that receives at least 2 params, request and response. If it receives more parameters, they will be injected based on the parameter name
-
-
-A HTTP POST controller
 <b>app.controller.post(path, controllerImplementation)</b>
 Where:
 
@@ -408,7 +406,8 @@ Where:
 * <b>controllerImplementation</b> is function that receives at least 2 params, request and response. If it receives more parameters, they will be injected based on the parameter name
 
 
-A HTTP PUT controller
+<b>A HTTP PUT controller</b>
+
 <b>app.controller.put(path, controllerImplementation)</b>
 Where:
 
@@ -416,7 +415,8 @@ Where:
 * <b>controllerImplementation</b> is function that receives at least 2 params, request and response. If it receives more parameters, they will be injected based on the parameter name
 
 
-A HTTP DELETE controller
+<b>A HTTP DELETE controller</b>
+
 <b>app.controller.del(path, controllerImplementation)</b>
 Where:
 
@@ -432,16 +432,20 @@ You can always modify it to use the rendering engine you like. See Rendering sec
 ### Middleware
 
 Middlewares are functions that are going to be ran for every request.
+
 Middleware have access to the request and response object, both for reading and writing purpose.
+
 When a middleware is done doing its activity, it must call a callback function, passing the request and response objects.
 
 Adds a middleware
+
 <b>app.middleware.use(middlewareFunction)</b>
 Where:
 
 * <b>middlewareFunction</b> is the function that implement the middleware functionality.
 
 Also, <b>middlewareFunction</b> is expected to be like:
+
 <b>function(request, response, next)</b>
 Where:
 
@@ -452,9 +456,11 @@ Where:
 ### Response
 
 ZondaJS uses the same HTTP server module node provides.
+
 It adds some handy methods, know internally as enhancements, to facilitate the developer tasks.
 
-Rendering a view
+<b>Rendering a view</b>
+
 <b>response.render(template, dataObject)</b>
 Where:
 
@@ -462,28 +468,32 @@ Where:
 * <b>dataObject</b> is the object containing the information (property-value) to be rendered.
 
 
-Rendering JSON
+<b>Rendering JSON</b>
+
 <b>response.sendJSON(dataObject)</b>
 Where:
 
 * <b>dataObject</b> is the object containing the information (property-value) to be serialized and rendered.
 
 
-Rendering a custom error page
+<b>Rendering a custom error page</b>
+
 <b>response.sendError(errorCode)</b>
 Where:
 
 * <b>errorCode</b> is HTTP error code. Notice also that a HTML file must exist in the views/errors/ folder with the errorCode as file name (e.g. 404.html)
 
 
-Answering the request with a file.
+<b>Answering the request with a file.</b>
+
 <b>response.sendFile(filePath)</b>
 Where:
 
 * <b>filePath</b> is the path to the file to be returned.
 
 
-Sending a redirection:
+<b>Sending a redirection:</b>
+
 <b>response.redirect(path)</b>
 Where:
 
@@ -494,15 +504,19 @@ Where:
 Same as the response object. The request object comes from Node's HTTP module. Here are some enhancements on it.
 
 It exposes a params object containingd the parameters (from named params, querystring and post methods)
+
 <b>request.params</b>
 
 If you are expecting a request body, it is available by:
+
 <b>request.body</b>
 
 If you are doing file uploads, it exposes an array with all the files:
+
 <b>request.files</b>
 
 If you are handling cookies, a cookies object is exposed:
+
 <b>request.cookies</b>
 
 ### Internal Data
@@ -519,6 +533,7 @@ These objects are meant to be private. Don't modify them unless you completely k
 Finally, but not least, ZondaJS exposes the most important function.
 
 Launching the app.
+
 <b>app.startApp(port)</b>
 Where:
 
