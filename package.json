@@ -2,7 +2,7 @@
   "author": "Humberto Miatello",
   "name": "zondajs",
   "description": "MVC Web Framework with dependency injection",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "repository": {
     "url": "https://github.com/chuqui/zondajs"
   },

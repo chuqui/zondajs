@@ -250,20 +250,25 @@ var url     = require("url");
                 zondajs.middleware.list.push(middleware);
             }
         },
-        /**
-         * Well, ZondaJS loader is not actully a loader but intead a file indexer.
-         * For a given relative path and a callback, it will call the callback with:
-         *  - cleaned file name(e.g. 'db.js' file will be 'db')
-         *  - the complete relative path to the file [require ready string](e.g. './components/db.js')
-         */
-        load: function(dir, callback){
-            require('fs').readdirSync(dir + '/').forEach(function(file) {
-                if (file.match(/.+\.js/g) !== null) {
-                    var name = file.replace(/.js/g, '');
-                    callback(name, dir + '/' + file);
-                }
-            });
-        },
+		/**
+		 * Wrapper to support future updates
+		 */
+		loader: {
+            /**
+            * Well, ZondaJS loader is not actully a loader but intead a file indexer.
+             * For a given relative path and a callback, it will call the callback with:
+             *  - cleaned file name(e.g. 'db.js' file will be 'db')
+             *  - the complete relative path to the file [require ready string](e.g. './components/db.js')
+             */
+            load: function(dir, callback){
+                require('fs').readdirSync(dir + '/').forEach(function(file) {
+                    if (file.match(/.+\.js/g) !== null) {
+                        var name = file.replace(/.js/g, '');
+                        callback(name, dir + '/' + file);
+                    }
+                });
+            }
+		},
         /**
          * this section overrides the default request and response objects by enhance them with common methods.
          */ 

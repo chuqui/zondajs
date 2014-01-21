@@ -260,7 +260,7 @@ ZondaJS comes with a load function that enables you yo load dinamically your pro
 The loader is not actually a loader but a file indexer, so when you load a folder, it will call you callback function giving it the complete relative path to the .js files in it (require ready path). Then you can decide if require them or not.
 
 ```javascript
-app.load('./controllers', function(name, filepath){
+app.loader.load('./controllers', function(name, filepath){
   console.log(name + ' controller about to be loaded');
   require(filepath);
   console.log(name + ' loaded');
@@ -390,7 +390,7 @@ app.properties.get('typoedName'); // undefined
 
 ### Loader
 
-<b>app.load(path, callback)</b>
+<b>app.loader.load(path, callback)</b>
 Where:
 
 * <b>path</b> is the relative route to the folder you want to index.
@@ -403,7 +403,7 @@ Where:
 As seen before, the loader is not actually a loader but a file indexer, so when you load a folder, it will call you callback function giving it the complete relative path to the .js files in it (require ready path). Then you can decide if require them or not.
 
 ```javascript
-app.load('./controllers', function(name, filepath){
+app.loader.load('./controllers', function(name, filepath){
   console.log(name + ' controller about to be loaded');
   require(filepath);
   console.log(name + ' loaded');
@@ -411,7 +411,7 @@ app.load('./controllers', function(name, filepath){
 
 // another kind of loader to save everything into an object
 var myStuff = {};
-app.load('./myStuff', function(name, filepath){
+app.loader.load('./myStuff', function(name, filepath){
   console.log(name + ' controller about to be loaded');
   myStuff[name] = require(filepath);
   console.log(name + ' loaded');
