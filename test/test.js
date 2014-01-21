@@ -275,8 +275,12 @@ describe('Running zondajs tests', function(){
 
   describe('Loader tests', function(){
     
-    it('zondajs.load must be defined', function(){
-       assert(zondajs.load);
+    it('zondajs.loader must be defined', function(){
+       assert(zondajs.loader);
+    });
+	
+	it('zondajs.loader.load must be defined', function(){
+       assert(zondajs.loader.load);
     });
   });
 
