@@ -38,6 +38,25 @@ ZondaJS starts as a project to support an startup I'm working. I needed a couple
 * Session middleware (using existing cookies support)
 * Clean up and publish on NPM repo
 
+### Dependencies
+
+<b>Node versions</b>
+
+* node @ >=0.8.x
+
+<b>Dependencies</b>
+
+* underscore@1.5.2
+* ejs@0.8.5
+* formidable@1.0.14
+* cookies@0.3.8
+* keygrip@1.0.0
+* mime@1.2.11
+
+<b>Test dependencies</b>
+
+* mocha@1.16.2
+
 ### Hello World
 
 Say hello to our Hello World app example.
