@@ -341,12 +341,35 @@ Where:
 * <b>key</b> is the key used to identify the property value.
 * <b>value</b> is the object returned when the property key is fetched.
 
+```javascript
+// set a string
+app.properties.set('greetings', "Hello World");
+
+// set an object
+app.properties.set('config', {
+  port: 8080,
+  version: '@1.0.1'
+});
+
+//since functions are objects...
+app.properties.set('myWeirdFunction', function(){
+  console.log('I should be a bad practice, but I am still possible');
+});
+```
+
 <b>object : app.properties.get(key, value)</b>
 Where:
 
 * <b>key</b> is the key of the property you want to get.
 
 If no property is found for the given key, undefined will be returned instead.
+```javascript
+app.properties.get('greetings'); // "Hello World"
+
+app.properties.get('myWeirdFunction')(); // outputs 'I should be a bad practice, but I am still possible'
+
+app.properties.get('typoedName'); // undefined
+```
 
 ### Loader
 
@@ -396,6 +419,11 @@ Where:
 * <b>path</b> is the controller path where the controller implementation will be mapped to.
 * <b>controllerImplementation</b> is function that receives at least 2 params, request and response. If it receives more parameters, they will be injected based on the parameter name
 
+```javascript
+app.controller.get('/', function(request, response){
+  response.end('GET /');
+});
+```
 
 <b>A HTTP POST controller</b>
 
@@ -405,6 +433,11 @@ Where:
 * <b>path</b> is the controller path where the controller implementation will be mapped to.
 * <b>controllerImplementation</b> is function that receives at least 2 params, request and response. If it receives more parameters, they will be injected based on the parameter name
 
+```javascript
+app.controller.post('/', function(request, response){
+  response.end('POST /');
+});
+```
 
 <b>A HTTP PUT controller</b>
 
@@ -414,6 +447,11 @@ Where:
 * <b>path</b> is the controller path where the controller implementation will be mapped to.
 * <b>controllerImplementation</b> is function that receives at least 2 params, request and response. If it receives more parameters, they will be injected based on the parameter name
 
+```javascript
+app.controller.put('/', function(request, response){
+  response.end('PUT /');
+});
+```
 
 <b>A HTTP DELETE controller</b>
 
@@ -422,6 +460,12 @@ Where:
 
 * <b>path</b> is the controller path where the controller implementation will be mapped to.
 * <b>controllerImplementation</b> is function that receives at least 2 params, request and response. If it receives more parameters, they will be injected based on the parameter name
+
+```javascript
+app.controller.del('/', function(request, response){
+  response.end('DELETE /');
+});
+```
 
 ### Views
 
@@ -453,6 +497,33 @@ Where:
 * <b>response</b> is current response object.
 * <b>next</b> is the callback function to be called when the middleware has ended doing it's tasks. It receives the request and response objects.
 
+
+```javascript
+// Dummy middleware
+app.middleware.use(function(request, response, next){
+  if(request.method === 'GET'){
+	console.log('got a get baby');
+  }
+  next(request, response);
+});
+
+
+// add cookies support using the cookies and keygrip libraries
+var cookies = require('cookies');
+var keygrip = require('keygrip');
+
+// change these passwords
+keys = keygrip(['&083#$%^df8', 'Nk]L2E3Lmk', '65[5AyE3%'], 'sha256', 'hex');
+
+var cookiesMiddleware = function(request, response, next){
+  request.cookies = cookies(request, response, keys);
+  next(request, response);
+};
+
+app.middleware.use(cookiesMiddleware);
+
+```
+
 ### Response
 
 ZondaJS uses the same HTTP server module node provides.
@@ -467,6 +538,14 @@ Where:
 * <b>templateName</b> is the template file to render to.
 * <b>dataObject</b> is the object containing the information (property-value) to be rendered.
 
+```javascript
+app.controller.get('/', function(request, response){
+  response.render('home.ejs', {
+    title: 'Home page',
+	message: 'Welcome to my home page!'
+  });
+});
+```
 
 <b>Rendering JSON</b>
 
@@ -475,6 +554,19 @@ Where:
 
 * <b>dataObject</b> is the object containing the information (property-value) to be serialized and rendered.
 
+```javascript
+app.controller.get('/json/test', function(request, response){
+  response.sendJSON({
+    id: 1242,
+	name: 'Foo bar'
+	categories: [
+	  'javascript',
+	  'css',
+	  'html'
+	]
+  });
+});
+```
 
 <b>Rendering a custom error page</b>
 
@@ -483,6 +575,11 @@ Where:
 
 * <b>errorCode</b> is HTTP error code. Notice also that a HTML file must exist in the views/errors/ folder with the errorCode as file name (e.g. 404.html)
 
+```javascript
+app.controller.get('/testing404', function(request, response){
+  response.sendError(404);
+});
+```
 
 <b>Answering the request with a file.</b>
 
@@ -491,6 +588,11 @@ Where:
 
 * <b>filePath</b> is the path to the file to be returned.
 
+```javascript
+app.controller.get('/get/report', function(request, response){
+  response.sendFile('docs/report.pdf');
+});
+```
 
 <b>Sending a redirection:</b>
 
@@ -498,6 +600,12 @@ Where:
 Where:
 
 * <b>path</b> is the path/URL to be redirected to.
+
+```javascript
+app.controller.get('/logout', function(request, response){
+  response.redirect('/');
+});
+```
 
 ### Request
 
@@ -507,17 +615,60 @@ It exposes a params object containingd the parameters (from named params, querys
 
 <b>request.params</b>
 
+```javascript
+app.controller.get('/product/:id', function(request, response){
+  console.log(request.params);
+  console.log(request.params.id);
+  response.end('Done');
+});
+```
+
 If you are expecting a request body, it is available by:
 
 <b>request.body</b>
+
+```javascript
+app.controller.put('/api/product/:id', function(request, response){
+  console.log(request.params);
+  console.log(request.params.id);
+  updatingToObj = JSON.parse(request.body);
+  response.end('Done');
+});
+```
 
 If you are doing file uploads, it exposes an array with all the files:
 
 <b>request.files</b>
 
-If you are handling cookies, a cookies object is exposed:
+```javascript
+app.controller.post('/api/product/:id', function(request, response){
+  console.log(request.params);
+  console.log(request.params.id);
+  console.log('And the uploaded fiels are:');
+  console.log(request.files);
+  response.end('Done');
+});
+```
+
+A cookies object is always exposed (when using the default cookies middleware):
 
 <b>request.cookies</b>
+
+```javascript
+app.controller.get('/cookietest', function(request, response){
+  request.cookies.set( "unsigned", "foo", { httpOnly: false } );
+  request.cookies.set( "signed", "bar", { signed: true } );
+
+  response.redirect('/cookietestcheck');
+});
+
+app.controller.get('/cookietestcheck', function(request, response){
+  var unsigned = request.cookies.get( "unsigned" );   // foo
+  var signed = request.cookies.get( "signed", { signed: true } );  // bar
+
+  response.end('Done');
+});
+```
 
 ### Internal Data
 
@@ -539,7 +690,9 @@ Where:
 
 * <b>port</b> is the port the server will listen for requests.
 
-
+```javascript
+app.startApp(8080);
+```
 
 ## More Info
 
