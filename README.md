@@ -2,7 +2,7 @@
 
 ZondaJS is node.js web framework for building web apps.
 
-[![Build Status](https://travis-ci.org/chuqui/zondajs.png?branch=master)](https://travis-ci.org/chuqui/zondajs)
+[![Build Status](https://travis-ci.org/chuqui/zondajs.png?branch=master)](https://travis-ci.org/chuqui/zondajs) [![Dependency Status](https://david-dm.org/chuqui/zondajs.png?theme=shields.io)](https://david-dm.org/chuqui/zondajs)
 
 For a better experience, read this doc at http://documentup.com/chuqui/zondajs
 
