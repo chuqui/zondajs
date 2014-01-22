@@ -711,6 +711,43 @@ Where:
 app.startApp(8080);
 ```
 
+## Contributing
+
+Any kind of help/feedback is highly appreciated!
+
+### Working/fixing ZondaJS core.
+
+If you want to contribute by coding ZondaJS, please follow this steps:
+
+* Fork
+* Create your feature branch
+* Send a pull request
+
+### Working on components/middleware
+
+Great! In this case you don't need to send a pull request. Just package your code and tests, and provide documentation on how to install and use it.
+This code will be 100% yours and you will be the one maintaining and publishing it to npm. Of course, we are interested on supporting and helping you.
+
+<b>Naming convention</b>
+
+* zondajs-&lt;your_project_name&gt;-&lt;type&gt;
+
+Where
+
+* your_project_name is, well, you already know!, your project name.
+* type is one of "component", "middleware", &c.
+
+So, the idea is to keep names simple and self-explanatory. Example names are:
+
+* zondajs-dbsession-middleware
+* zondajs-validation-component
+* zondajs-oAuth-component
+* and so on...
+
+### Sending feedback
+
+Just create an issue, so we can discuss about it.
+
 ## More Info
 
 Let me know if you are using ZondaJS. I wanna know what's your opinion and how can we improve the framework!.
