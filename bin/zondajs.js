@@ -54,11 +54,11 @@ var packjson = {
   "version": "0.0.1",
   "dependencies": {
     "underscore": "1.5.2",
-    "ejs":"0.8.5",
     "formidable":"1.0.14",
     "cookies":"0.3.8",
     "keygrip":"1.0.0",
-    "mime": "1.2.11"
+    "mime": "1.2.11",
+    "swig": "~1.3.2"
   },
   "engines": {
     "node": ">=0.8.x"
