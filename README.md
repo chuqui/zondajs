@@ -45,7 +45,7 @@ ZondaJS starts as a project to support an startup I'm working. I needed a couple
 <b>Dependencies</b>
 
 * underscore@1.5.2
-* ejs@0.8.5
+* swig@~1.3.2
 * formidable@1.0.14
 * cookies@0.3.8
 * keygrip@1.0.0
@@ -211,7 +211,7 @@ app.controller.get('/product/:category/:id', function(request, response){
 
 ### Rendering
 
-By default, ZondaJS uses EJS for rendering. Read more on EJS.
+By default, ZondaJS uses SWIG for rendering. Read more on the SWIG templating engine on http://paularmstrong.github.io/swig/
 
 You can render at any point of the execution, actually after the step 1 (See execution flow),  and there are a couple of handy methods:
 
@@ -486,7 +486,7 @@ app.controller.del('/', function(request, response){
 
 ### Views
 
-ZondaJS uses EJS for views. Check the EJS site for more info.
+ZondaJS uses SWIG for views. Check the SWIG site for more info. See http://paularmstrong.github.io/swig/
 
 You can always modify it to use the rendering engine you like. See Rendering section above.
 
@@ -557,7 +557,7 @@ Where:
 
 ```javascript
 app.controller.get('/', function(request, response){
-  response.render('home.ejs', {
+  response.render('home.html', {
     title: 'Home page',
 	message: 'Welcome to my home page!'
   });

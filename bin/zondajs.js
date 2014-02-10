@@ -27,7 +27,7 @@ fs.createReadStream(tpl + 'static.js').pipe(fs.createWriteStream('./middleware/s
 
 fs.mkdirSync('./views');
 console.log('Views folder created...');
-fs.createReadStream(tpl + 'demo.ejs').pipe(fs.createWriteStream('./views/demo.ejs'));
+fs.createReadStream(tpl + 'demo.html').pipe(fs.createWriteStream('./views/demo.html'));
 fs.mkdirSync('./views/errors');
 fs.createReadStream(tpl + 'errors/400.html').pipe(fs.createWriteStream('./views/errors/400.html'));
 fs.createReadStream(tpl + 'errors/404.html').pipe(fs.createWriteStream('./views/errors/404.html'));
