@@ -37,6 +37,10 @@ ZondaJS starts as a project to support an startup I'm working. I needed a couple
 * Clean up and publish on NPM repo
 * <b>Important! REDO the dependency injection feature, as it doesn't provide a way to run on minified/uglyfied code.</b>
 
+### Status
+
+Rewriting controllers and middleware architecture
+
 ### Dependencies
 
 <b>Node versions</b>
