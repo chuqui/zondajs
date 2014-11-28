@@ -6,162 +6,12 @@ var url     = require("url");
  * Anonimous function prevents from adding objects to the head scope
  */ 
 (function(){
+    var router = require("router.js");
+    var injector = require("injector.js");
+    var loader = require("loader.js");
+    var controller = require("controller.js");
 
-    /**
-     * Our ZondaJS object, once it's defined we will export it
-     */
     var zondajs = {
-        /**
-         * Meant to be private.
-         * __routes handles the routing for ZondaJs
-         */
-        __routes:{
-            /**
-             * All the routes are going to be stored here.
-             */
-            list: [],
-            /**
-             * Config object has useful routing metadata, going to be extended in future versions
-             */
-            config: {
-                /**
-                 * RegExp used to match the named params
-                 */
-                namedRegex: /:\w+/g
-            },
-            /**
-             * Add a route to out routes list
-             */
-            add: function(path, method, callable){
-                /**
-                 * An object is created having useful data for the routing mechanism.
-                 *
-                 * path is the route URI
-                 * regex is a pre-parsed URL, creating matching groups for every named param found in the path
-                 * method stands for the HTTP method. One of GET, POST, PUT or DELETE.
-                 * callable is the controller implementation to be called when a request match this route
-                 */
-                zondajs.__routes.list.push({
-                    path: path,
-                    regex: '^' + path.replace(zondajs.__routes.config.namedRegex, '([^\/]+)') + '$',
-                    method: method,
-                    callable: callable
-                });
-            },
-            /**
-             * Fetch the route and parse it named params if any.
-             *
-             * Returns an object having method and params properties:
-             *  - method is the controller implementation
-             *  - params is an object having the named params as properties and their values as values
-             *
-             * If no route is found it returns false.
-             */
-            get: function(path, method){
-                var candidate = _.find(zondajs.__routes.list, function(route){
-                    rx = new RegExp(route.regex);
-                    return rx.test(path);
-                });
-
-                if(typeof candidate !== 'undefined'){
-                    var rx1 = new RegExp(zondajs.__routes.config.namedRegex);
-                    var paramNames = candidate.path.match(rx1);
-                    var paramValues = rx.exec(path);
-                    var params = {};
-                    _.each(paramNames, function(param, index){
-                        params[param.replace(':', '')] = paramValues[index + 1]
-                    });
-                    return {
-                        method: candidate.callable,
-                        params: params
-                    };
-                }else{
-                    return false;
-                }
-            }
-        },
-        /**
-         * Meant to be private
-         * This is the dependency injection main object
-         */
-        __di : {
-            /**
-             * Array where all the components available to be injected are stored
-             */
-            map: [],
-            /**
-             * Fetches the components to be injected by its key
-             *
-             * Returns the component if found, undefined if not found.
-             */ 
-            get: function(key){
-                if(this[key]){
-                    return this.key;
-                }
-
-                var candidate =  _.find(zondajs.__di.map, function(entry){
-                    return (entry.key == key);
-                });
-
-                if(typeof candidate !== 'undefined'){
-                    return candidate.value;
-                }else{
-                    return candidate;
-                };
-            },
-            /**
-             * From a given function, extract the parameter names in order to know what keys need to be injected.
-             *
-             * Notice that the request and response keys are reserved and ignored for dependency injection, 
-             * since they are going to be the current request/response objects for a given server request.
-             */ 
-            identifyParams: function(callable){
-                var regexp = /^function\s*[^\( ]*\(\s*([^\)]*)\)/m;
-                var fnParams =  callable.toString().match(regexp)[1].replace(/\s/g, '').split(',');
-                
-                // clean request and response
-                return _.without(fnParams, 'request', 'response');
-            },
-            /**
-             * For each parameter of a given function get its dependecies
-             *
-             * If the dependency is a function, inject its dependencies recursively.
-             *
-             * Returns an array with the function expected parameters.
-             */ 
-            getDependencies: function(callable){
-                var params = [];
-                var keys = zondajs.__di.identifyParams(callable);
-                _.each(keys, function(key){
-                    var dependency = zondajs.__di.get(key);
-                    if(typeof dependency !== 'undefined'){
-                        if(dependency instanceof Function){
-                            params.push(dependency.apply(this, zondajs.__di.getDependencies(dependency)));
-                        }else{
-                            params.push(dependency);
-                        }
-                    }
-                });
-                return params;
-            },
-            /**
-             * For a given function (controller implementation), look for its dependencies and call it.
-             *
-             * The hooks param is used for the request and response objects, that are not injected.
-             *
-             */
-            invoke: function(callable, hooks){
-                if(typeof hooks !== 'undefined'){
-                    callable.apply(this, _.union(hooks, zondajs.__di.getDependencies(callable)));
-                }else{
-                    callable.apply(this, zondajs.__di.getDependencies(callable));
-                }
-            }
-        },
-        /**
-         * ZondaJS properties implementation
-         *
-         */
         properties: {
             /**
              * Where the properties are going to be stored
@@ -194,47 +44,13 @@ var url     = require("url");
                 }
             }
         },
-        /**
-         * ZondaJS component wrapper for dependency injection.
-         *
-         * It creates a new key-value object in the dependency injection map.
-         *
-         */
         component:  function(name, object){
-            zondajs.__di.map.push({
+            injector.push({
                 key: name,
                 value: object
-            });    
+            });
         },
-        /**
-         * Controller wrapper object to add different kind of controllers to the app.
-         */ 
-        controller: {
-            /**
-             * Add a controller to the available routes, when using the GET HTTP method.
-             */ 
-            get: function(path, callable){
-                zondajs.__routes.add(path, 'GET' ,callable);
-            },
-            /**
-             * Add a controller to the available routes, when using the POST HTTP method.
-             */ 
-            post: function(path, callable){
-                zondajs.__routes.add(path, 'POST' ,callable);
-            },
-            /**
-             * Add a controller to the available routes, when using the PUT HTTP method.
-             */ 
-            put: function(path, callable){
-                zondajs.__routes.add(path, 'PUT' ,callable);
-            },
-            /**
-             * Add a controller to the available routes, when using the DELETE HTTP method.
-             */ 
-            del: function(path, callable){
-                zondajs.__routes.add(path, 'DELETE' ,callable);
-            }
-        },
+
         /**
          * Handle the middleware implementations in ZondaJS
          */ 
@@ -253,22 +69,7 @@ var url     = require("url");
 		/**
 		 * Wrapper to support future updates
 		 */
-		loader: {
-            /**
-            * Well, ZondaJS loader is not actully a loader but intead a file indexer.
-             * For a given relative path and a callback, it will call the callback with:
-             *  - cleaned file name(e.g. 'db.js' file will be 'db')
-             *  - the complete relative path to the file [require ready string](e.g. './components/db.js')
-             */
-            load: function(dir, callback){
-                require('fs').readdirSync(dir + '/').forEach(function(file) {
-                    if (file.match(/.+\.js/g) !== null) {
-                        var name = file.replace(/.js/g, '');
-                        callback(name, dir + '/' + file);
-                    }
-                });
-            }
-		},
+		,
         /**
          * this section overrides the default request and response objects by enhance them with common methods.
          */ 
@@ -379,7 +180,7 @@ var url     = require("url");
                 var parsedURL = url.parse(request.url, true);
 
                 // get the controller, and if it has route params, the params too.
-                controller = zondajs.__routes.get(parsedURL.pathname, request.method);
+                controller = router.get(parsedURL.pathname, request.method);
                 
                 //console.log(parsedURL.pathname);
                 //console.log(parsedURL.pathname.indexOf('/static/'));
