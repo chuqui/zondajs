@@ -1,4 +1,5 @@
 /*global require, describe, it*/
+
 var assert = require("assert"),
     injector = require("../lib/injector.js"),
     component = require("../lib/component.js");
