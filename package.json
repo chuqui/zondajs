@@ -22,9 +22,9 @@
     "framework"
   ],
   "dependencies": {
-    "underscore": "1.5.2",
-    "mime": "1.2.11",
-    "swig": "~1.3.2"
+    "underscore": "^1.7.0",
+    "mime": "^1.2.11",
+    "swig": "^1.4.2"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
