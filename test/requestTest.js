@@ -33,5 +33,4 @@ describe("Request Tests", function () {
         assert.equal(mockedRequest.params.param4, 15, "Param shouldn't be modified");
         assert.equal(mockedRequest.params.paramInCommon, 25, "Param shouldn't be modified");
     });
-
 });
